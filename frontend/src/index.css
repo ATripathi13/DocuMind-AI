@@ -3,44 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --primary: #020617;
-  --accent: #22d3ee;
-  --accent-soft: rgba(34, 211, 238, 0.1);
-  --accent-glow: 0 0 30px rgba(34, 211, 238, 0.4);
+  --primary: #0f172a;
+  --accent: #3b82f6;
+  /* More blue than cyan for this specific design */
+  --accent-glow: 0 0 20px rgba(59, 130, 246, 0.5);
   --success: #10b981;
   --error: #ef4444;
-  --glass: rgba(15, 23, 42, 0.6);
+  --glass-bg: rgba(15, 23, 42, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --card-bg: rgba(30, 41, 59, 0.5);
 }
 
 @layer base {
-  * {
-    @apply border-white/5;
-  }
-
   body {
-    @apply bg-slate-950 text-slate-200 font-sans antialiased selection:bg-accent/30 selection:text-white;
-    background:
-      radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 100% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 50% 100%, rgba(34, 211, 238, 0.05) 0%, transparent 40%),
-      #020617;
-    position: relative;
-    overflow-x: hidden;
-  }
-
-  /* Premium Grain Texture overlay for depth */
-  body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.15;
-    z-index: 9999;
-    pointer-events: none;
-    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-    filter: contrast(120%) brightness(120%);
+    @apply bg-slate-950 text-slate-200 font-sans antialiased overflow-hidden;
+    background: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
   }
 
   h1,
@@ -49,71 +26,60 @@
   h4,
   .font-display {
     font-family: 'Poppins', sans-serif;
-    @apply font-bold tracking-tight;
   }
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-3xl shadow-2xl transition-all duration-500 hover:border-white/10;
+  .dashboard-card {
+    @apply bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-[40px] shadow-2xl transition-all duration-300;
   }
 
-  .glass-panel {
-    @apply bg-slate-950/60 backdrop-blur-2xl border-white/5;
+  .glow-border {
+    @apply border-accent/30 shadow-[0_0_15px_rgba(59, 130, 246, 0.3)];
   }
 
-  .btn-primary {
-    @apply relative overflow-hidden bg-accent text-slate-950 font-black px-8 py-3 rounded-2xl transition-all duration-500 hover:shadow-[0_0_30px_rgba(34, 211, 238, 0.4)] hover:scale-[1.02] active:scale-95 uppercase tracking-widest text-[10px];
+  .btn-upload {
+    @apply bg-indigo-600 text-white font-bold px-8 py-3 rounded-2xl hover:bg-indigo-500 transition-all duration-300 shadow-lg shadow-indigo-500/20 active:scale-95 text-sm;
   }
 
-  .btn-secondary {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 text-white font-bold px-8 py-3 rounded-2xl hover:bg-white/10 transition-all duration-300 active:scale-95 uppercase tracking-widest text-[10px];
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-400 font-medium hover:text-white transition-all duration-200;
   }
 
-  .nav-link {
-    @apply flex items-center gap-4 px-5 py-4 rounded-2xl text-slate-500 font-bold hover:text-white hover:bg-white/[0.03] transition-all duration-300;
+  .nav-item-active {
+    @apply bg-white/5 border border-white/10 text-white shadow-[0_0_20px_rgba(59, 130, 246, 0.2)];
+    position: relative;
   }
 
-  .nav-link-active {
-    @apply flex items-center gap-4 px-5 py-4 rounded-2xl text-accent bg-accent/5 border border-accent/10 font-black shadow-[inset_0_0_20px_rgba(34, 211, 238, 0.05)];
+  .nav-item-active::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 25%;
+    height: 50%;
+    width: 4px;
+    @apply bg-accent rounded-full;
   }
 
-  .premium-input {
-    @apply bg-slate-950/50 border border-white/5 rounded-2xl px-6 py-4 text-sm font-light focus:outline-none focus:border-accent/40 focus:ring-4 focus:ring-accent/5 transition-all w-full;
+  .chat-input-area {
+    @apply bg-slate-900/60 border border-white/5 rounded-3xl px-6 py-4 flex items-center gap-4 transition-all duration-300;
   }
 
-  /* Custom Scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
+  .chat-bubble-user {
+    @apply bg-indigo-600 text-white px-6 py-3 rounded-2xl rounded-tr-none text-sm;
   }
 
-  ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+  .chat-bubble-ai {
+    @apply bg-slate-800 text-slate-200 px-6 py-3 rounded-2xl rounded-tl-none text-sm border border-white/5;
   }
 
-  ::-webkit-scrollbar-thumb {
-    @apply bg-white/10 rounded-full hover:bg-accent/40 transition-all;
+  .tag {
+    @apply text-[10px] font-bold px-2 py-1 rounded bg-accent/20 text-accent uppercase tracking-widest;
   }
 }
 
-.text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-white to-slate-500;
-}
-
-.text-glow {
-  text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
-}
-
-.accent-border-glow {
-  @apply relative;
-}
-
-.accent-border-glow::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(to bottom right, var(--accent), transparent, transparent);
-  z-index: -1;
-  border-radius: inherit;
-  opacity: 0.5;
+.bg-mesh {
+  background:
+    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
 }
