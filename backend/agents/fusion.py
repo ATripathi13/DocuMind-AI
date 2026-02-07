@@ -12,9 +12,13 @@ class FusionAgent:
         print("Fusion Agent: Fusing vision and text data...")
         vision_data = state.get("vision_data", [])
         text_data = state.get("text_data", [])
+        openai_key = state.get("openai_key")
         
-        # In a real system, we'd send both to an LLM
-        # For this prototype/base implementation, we'll perform a logical fusion
+        # Dynamically initialize model if key is provided
+        if openai_key:
+            self.llm = ChatOpenAI(model="gpt-4o", openai_api_key=openai_key)
+        elif os.getenv("OPENAI_API_KEY"):
+            self.llm = ChatOpenAI(model="gpt-4o")
         
         fused_results = []
         for v_page, t_page in zip(vision_data, text_data):

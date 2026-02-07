@@ -11,6 +11,7 @@ class AgentState(TypedDict):
     validation_results: Dict[str, Any]
     confidence_score: float
     current_agent: str
+    openai_key: Optional[str]
 
 class DocuMindOrchestrator:
     def __init__(self, vision_agent, text_agent, fusion_agent, validation_agent):
@@ -38,7 +39,7 @@ class DocuMindOrchestrator:
 
         return workflow.compile()
 
-    async def process(self, document_path: str, image_paths: List[str]):
+    async def process(self, document_path: str, image_paths: List[str], openai_key: str = None):
         initial_state = {
             "document_path": document_path,
             "image_paths": image_paths,
@@ -47,6 +48,7 @@ class DocuMindOrchestrator:
             "fusion_data": {},
             "validation_results": {},
             "confidence_score": 0.0,
-            "current_agent": "vision_agent"
+            "current_agent": "vision_agent",
+            "openai_key": openai_key
         }
         return await self.workflow.ainvoke(initial_state)
