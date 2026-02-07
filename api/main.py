@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 import os
@@ -18,6 +19,11 @@ from agents.validation import ValidationAgent
 from rag.engine import RAGSystem
 
 app = FastAPI(title="DocuMind AI", version="1.0.0")
+
+# Mount data directory for static file access
+if not os.path.exists("data"):
+    os.makedirs("data")
+app.mount("/data", StaticFiles(directory="data"), name="data")
 
 # Initialize components
 doc_processor = DocProcessor()
