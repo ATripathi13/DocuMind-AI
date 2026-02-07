@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useRef } from 'react';
 import useStore from '../store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, MessageSquare, List, Sparkles, Send, MoreHorizontal, User, Bell, Grid, Plus, Loader2, Search, Zap, ShieldCheck } from 'lucide-react';
+import { FileText, MessageSquare, List, Sparkles, Send, MoreHorizontal, User, Bell, Grid, Plus, Loader2, Search, Zap, ShieldCheck, Settings as SettingsIcon } from 'lucide-react';
 import { askQuestion, uploadDocument } from '../api/client';
 import { useDropzone } from 'react-dropzone';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
     const { results, documentId, setDocumentId, setProcessing, setResults, setError, isProcessing } = useStore();
@@ -78,9 +79,9 @@ const Dashboard = () => {
                     <button className="p-2.5 bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all">
                         <Bell size={20} />
                     </button>
-                    <button className="p-2.5 bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all">
-                        <Search size={20} />
-                    </button>
+                    <Link to="/settings" className="p-2.5 bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all">
+                        <SettingsIcon size={20} />
+                    </Link>
                     <div className="flex items-center gap-3 bg-white/5 p-1.5 pr-4 rounded-full border border-white/5">
                         <div className="flex -space-x-2">
                             <img className="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-800" src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" />
