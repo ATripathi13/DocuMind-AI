@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: documind-backend
+    env: docker
+    dockerContext: backend
+    dockerfilePath: Dockerfile
+    plan: starter # Recommendation for RAM-intensive CV tasks
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: PORT
+        value: 8000
+    healthCheckPath: /
