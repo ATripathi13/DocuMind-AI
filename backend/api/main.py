@@ -66,7 +66,10 @@ async def root():
     return {"message": "Welcome to DocuMind AI API", "docs": "/docs"}
 
 @app.post("/process-doc", response_model=ProcessResponse)
-async def process_document(file: UploadFile = File(...)):
+async def process_document(
+    file: UploadFile = File(...),
+    x_openai_key: Optional[str] = Header(None)
+):
     doc_id = str(uuid.uuid4())
     temp_dir = Path(f"data/temp/{doc_id}")
     temp_dir.mkdir(parents=True, exist_ok=True)
@@ -80,7 +83,7 @@ async def process_document(file: UploadFile = File(...)):
         image_paths = doc_processor.pdf_to_images(str(file_path))
         
         # 2. Run Multi-Agent Orchestration
-        state = await orchestrator.process(str(file_path), image_paths)
+        state = await orchestrator.process(str(file_path), image_paths, openai_key=x_openai_key)
         
         # 3. Index in RAG system
         # Flatten text for RAG
@@ -98,7 +101,11 @@ async def process_document(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/ask")
-async def ask_question(question: str, document_id: str):
+async def ask_question(
+    question: str, 
+    document_id: str,
+    x_openai_key: Optional[str] = Header(None)
+):
     try:
         context = rag_system.query(question)
         # In a real system, we'd pass this context + question to an LLM

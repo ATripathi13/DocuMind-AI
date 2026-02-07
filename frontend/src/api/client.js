@@ -9,6 +9,15 @@ const client = axios.create({
     },
 });
 
+// Add a request interceptor to include the API key
+client.interceptors.request.use((config) => {
+    const key = localStorage.getItem('openai_api_key');
+    if (key) {
+        config.headers['X-OpenAI-Key'] = key;
+    }
+    return config;
+});
+
 export const uploadDocument = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
