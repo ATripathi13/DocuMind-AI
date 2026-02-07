@@ -21,9 +21,14 @@ from rag.engine import RAGSystem
 app = FastAPI(title="DocuMind AI", version="1.0.0")
 
 # Mount data directory for static file access
-if not os.path.exists("data"):
-    os.makedirs("data")
-app.mount("/data", StaticFiles(directory="data"), name="data")
+# We use a path relative to the file location to avoid issues with different CWDs
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
+
+if not DATA_DIR.exists():
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+app.mount("/data", StaticFiles(directory=str(DATA_DIR)), name="data")
 
 # Initialize components
 doc_processor = DocProcessor()
