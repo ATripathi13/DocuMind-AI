@@ -1,6 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1e293b;
+  --color-primary-light: #334155;
+  --color-primary-dark: #0f172a;
+  --color-accent: #22d3ee;
+  --color-accent-hover: #06b6d4;
+  --color-success: #10b981;
+  --color-error: #f43f5e;
+
+  --font-sans: "Inter", "sans-serif";
+  --font-display: "Poppins", "sans-serif";
+}
 
 :root {
   --primary: #0f172a;
@@ -35,7 +46,8 @@
   }
 
   .glow-border {
-    @apply border-accent/30 shadow-[0_0_15px_rgba(59, 130, 246, 0.3)];
+    @apply border-accent/30;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
   }
 
   .btn-upload {
@@ -47,7 +59,8 @@
   }
 
   .nav-item-active {
-    @apply bg-white/5 border border-white/10 text-white shadow-[0_0_20px_rgba(59, 130, 246, 0.2)];
+    @apply bg-white/5 border border-white/10 text-white;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
     position: relative;
   }
 
