@@ -18,8 +18,15 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 8000 available to the world outside this container
+# Pre-download ML models to speed up startup and avoid runtime network issues
+RUN python -c "import easyocr; reader = easyocr.Reader(['en'])"
+RUN python -c "from ultralytics import YOLO; YOLO('yolov8n.pt')"
+
+# Set environment variables for unbuffered logging
+ENV PYTHONUNBUFFERED=1
+
+# Make port 8000 available (Render will override this, but good for documentation)
 EXPOSE 8000
 
-# Run uvicorn when the container launches
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run uvicorn when the container launches, binding to the PORT env variable
+CMD sh -c "uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8000}"
